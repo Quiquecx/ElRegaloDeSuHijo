@@ -1,0 +1,869 @@
+/* =============================================================
+   EL REGALO DE SER SU HIJO - JUEGO
+   Estilos generales
+   ============================================================= */
+
+:root {
+  /* Paleta de marca (3° Preescolar · Casa del Catequista) */
+  --verde: #51AC45;
+  --verde-claro: #7BC470;
+  --verde-suave: #E7F3E4;
+
+  --amarillo: #FBB900;
+  --amarillo-claro: #FFD24D;
+  --amarillo-suave: #FFF3D6;
+
+  --azul: #3A95B4;
+  --azul-claro: #6FB8D0;
+  --azul-suave: #E3F2F7;
+
+  --blanco: #FFFFFF;
+  --crema: #FFFBF0;
+  --celeste: #EAF4FB;
+  --gris-texto: #4A4458;
+
+  --sombra: 0 8px 20px rgba(58, 149, 180, 0.20);
+  --sombra-suave: 0 12px 30px rgba(81, 172, 69, 0.16);
+  --radio: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+  background: var(--celeste);
+  color: var(--gris-texto);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* =============================================================
+   PANTALLAS
+   ============================================================= */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  overflow: auto;
+}
+
+.screen.active {
+  display: block;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* =============================================================
+   PORTADA
+   Misma plantilla reutilizable de la serie: la estructura
+   (fondo + tarjeta + título + imagen + botones) se mantiene
+   igual en cada juego; solo cambian las imágenes (titulo.png,
+   portada_imagen.png, logo_cruz.png), los textos y la paleta.
+   ============================================================= */
+
+.portada-bg {
+  width: 100%;
+  height: 100vh;
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, var(--verde) 0%, var(--azul) 52%, var(--amarillo) 100%);
+}
+
+.portada-bg::before,
+.portada-bg::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.portada-bg::before {
+  width: 46vmax;
+  height: 46vmax;
+  top: -18vmax;
+  left: -14vmax;
+}
+
+.portada-bg::after {
+  width: 38vmax;
+  height: 38vmax;
+  bottom: -16vmax;
+  right: -12vmax;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.portada-overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.portada-card {
+  width: min(920px, 92vw);
+  height: min(720px, 86vh);
+  background: linear-gradient(180deg, var(--crema) 0%, var(--blanco) 100%);
+  border-radius: 28px;
+  padding: 30px 34px 20px;
+  box-shadow: 0 24px 50px rgba(20, 40, 10, 0.28);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.portada-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(90deg, var(--verde) 0%, var(--azul) 50%, var(--amarillo) 100%);
+}
+
+.portada-card::after {
+  content: "";
+  position: absolute;
+  inset: 14px 10px 10px;
+  border-radius: 18px;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 3px rgba(81, 172, 69, 0.08);
+}
+
+.titulo {
+  width: min(420px, 72%);
+  max-height: 22%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-top: 6px;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.12));
+}
+
+.portada-media {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.portada-imagen {
+  max-width: 520px;
+  width: auto;
+  max-height: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 8px solid var(--blanco);
+  outline: 3px solid var(--azul-suave);
+  box-shadow: var(--sombra-suave);
+  background: var(--blanco);
+  display: block;
+  object-fit: contain;
+}
+
+.portada-botones {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.portada-footer {
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: 4px;
+  text-align: center;
+  color: var(--azul);
+  opacity: 0.75;
+  font-size: 13px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(58, 149, 180, 0.12);
+  box-sizing: border-box;
+}
+
+.portada-logo-peq {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  width: 40px;
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+}
+
+@media (max-width: 920px) {
+  .portada-card {
+    width: 94vw;
+    height: min(640px, 86vh);
+    padding: 24px 20px 16px;
+  }
+  .portada-imagen { max-width: 420px; }
+}
+
+@media (max-width: 540px) {
+  .portada-card {
+    width: 94vw;
+    height: min(620px, 88vh);
+    padding: 20px 16px 14px;
+    gap: 10px;
+  }
+  .titulo { width: 82%; max-height: 18%; }
+  .portada-imagen { max-width: 320px; border-width: 6px; border-radius: 12px; }
+  .btn-grande { font-size: 15px; padding: 10px 16px; }
+  .portada-footer { font-size: 11px; padding-top: 6px; }
+  .portada-logo-peq { width: 32px; right: 12px; bottom: 10px; }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .portada-card { height: 92vh; padding: 16px 20px 10px; gap: 6px; }
+  .titulo { width: 34%; max-height: 20%; }
+  .portada-imagen { max-height: 100%; }
+  .portada-footer { display: none; }
+}
+
+/* =============================================================
+   BOTONES
+   ============================================================= */
+
+.btn {
+  font-weight: 700;
+  font-size: 18px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--sombra);
+  color: var(--blanco);
+}
+
+.btn:active {
+  transform: scale(0.94);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+  box-shadow: 0 12px 26px rgba(81, 172, 69, 0.30);
+}
+
+.btn-secundario {
+  background: linear-gradient(135deg, var(--azul), var(--amarillo));
+  box-shadow: 0 12px 26px rgba(58, 149, 180, 0.28);
+}
+
+.btn-grande {
+  font-size: 20px;
+  padding: 16px 34px;
+}
+
+.btn-icon {
+  margin-right: 6px;
+}
+
+/* =============================================================
+   PANELES CENTRADOS / TARJETAS (bienvenida, resultado, como jugar)
+   ============================================================= */
+
+.panel-centrado {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(160deg, var(--verde-suave) 0%, var(--celeste) 60%, var(--azul-suave) 100%);
+}
+
+.fondo-nivel1 {
+  background: linear-gradient(160deg, var(--azul-suave) 0%, var(--celeste) 55%, var(--verde-suave) 100%);
+}
+
+.fondo-nivel2 {
+  background: linear-gradient(160deg, var(--amarillo-suave) 0%, var(--celeste) 55%, var(--verde-suave) 100%);
+}
+
+.fondo-nivel3 {
+  background: linear-gradient(160deg, var(--verde-suave) 0%, var(--celeste) 55%, var(--amarillo-suave) 100%);
+}
+
+.fondo-final {
+  background: linear-gradient(160deg, var(--amarillo-suave) 0%, var(--verde-suave) 50%, var(--azul-suave) 100%);
+}
+
+.tarjeta {
+  background: var(--blanco);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 32px 28px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+}
+
+.tarjeta-logo {
+  width: 56px;
+  margin-bottom: 8px;
+}
+
+.titulo-marca {
+  color: var(--verde);
+  font-weight: 800;
+  font-size: 26px;
+  margin: 6px 0 16px;
+}
+
+.emoji-grande {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.texto-mensaje {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--gris-texto);
+  margin-bottom: 20px;
+}
+
+.instruccion-bloque {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  background: var(--celeste);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.instruccion-bloque h3 {
+  margin: 0 0 4px;
+  color: var(--azul);
+  font-size: 17px;
+}
+
+.instruccion-bloque p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.instruccion-icono {
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.nota-adulto {
+  font-size: 13px;
+  color: #8a8397;
+  margin: 12px 0 20px;
+}
+
+/* =============================================================
+   CONTENEDOR DE JUEGO (niveles)
+   ============================================================= */
+
+.juego-contenedor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, var(--celeste) 0%, var(--amarillo-suave) 100%);
+  padding: 14px;
+  gap: 10px;
+}
+
+.juego-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.etiqueta-nivel {
+  background: var(--azul);
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+.etiqueta-progreso {
+  background: var(--verde);
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+/* =============================================================
+   NIVEL 1 - LA FILA DE NÚMEROS
+   ============================================================= */
+
+.n1-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 0;
+  padding: 10px;
+}
+
+.n1-linea-wrap {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.n1-papa-dios,
+.n1-regalo {
+  height: min(18vh, 130px);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.n1-pista {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 46px;
+}
+
+.n1-linea {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  border: 3px dashed var(--verde-claro);
+}
+
+.n1-slot {
+  flex-shrink: 0;
+  width: 68px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.10);
+}
+
+.n1-slot img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.n1-slot-vacio {
+  background: var(--amarillo-suave);
+  border: 3px dashed var(--amarillo);
+  position: relative;
+}
+
+.n1-slot-vacio::after {
+  content: "?";
+  position: absolute;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--amarillo);
+}
+
+.n1-slot-colocado {
+  animation: popIn 0.35s ease;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.n1-huella {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 44px;
+  transition: left 0.5s ease;
+}
+
+.n1-huella img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.n1-bandeja {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  min-height: 96px;
+}
+
+.n1-ficha {
+  width: 64px;
+  height: 86px;
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+  padding: 6px;
+  touch-action: manipulation;
+  transition: transform 0.15s ease;
+}
+
+.n1-ficha img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.n1-ficha:active {
+  transform: scale(0.9);
+}
+
+/* =============================================================
+   NIVEL 2 - ¿ESTÁ BIEN O ESTÁ MAL?
+   ============================================================= */
+
+.n2-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  min-height: 0;
+  padding: 10px;
+}
+
+.n2-tarjeta {
+  position: relative;
+  width: min(420px, 80vw);
+  height: min(50vh, 420px);
+  background: var(--blanco);
+  border-radius: 24px;
+  box-shadow: var(--sombra);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.n2-imagen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.n2-imagen img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.n2-emoji {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  animation: popIn 0.3s ease;
+}
+
+.n2-emoji img {
+  width: 60%;
+  max-width: 220px;
+  height: auto;
+}
+
+.n2-botones {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-n2 {
+  font-size: 19px;
+  padding: 18px 30px;
+  touch-action: manipulation;
+}
+
+.btn-n2-bien {
+  background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+}
+
+.btn-n2-mal {
+  background: linear-gradient(135deg, #F08A6C, #E85D3D);
+}
+
+.btn-n2:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* =============================================================
+   NIVEL 3 - CUENTA LOS REGALOS
+   ============================================================= */
+
+.n3-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 0;
+  padding: 6px;
+}
+
+.n3-prompt {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--azul);
+  text-align: center;
+  margin: 0;
+  max-width: 700px;
+}
+
+.n3-contador {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--verde);
+  margin: 0;
+}
+
+.n3-escena-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 3899 / 2836;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.n3-escena-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: var(--blanco);
+}
+
+.n3-capa-puntos {
+  position: absolute;
+  inset: 0;
+}
+
+.n3-punto {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 3px solid var(--amarillo);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--blanco);
+  touch-action: manipulation;
+  animation: pulso 1.6s ease-in-out infinite;
+}
+
+@keyframes pulso {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 185, 0, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(251, 185, 0, 0); }
+}
+
+.n3-punto-tocado {
+  background: var(--verde);
+  border-color: var(--verde);
+  animation: none;
+}
+
+.n3-opciones {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.n3-opcion-numero {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--blanco);
+  border: 3px solid var(--azul);
+  color: var(--azul);
+  font-size: 24px;
+  font-weight: 800;
+  box-shadow: var(--sombra);
+  touch-action: manipulation;
+  transition: transform 0.15s ease;
+}
+
+.n3-opcion-numero:active {
+  transform: scale(0.9);
+}
+
+.n3-opcion-correcta {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--blanco);
+}
+
+.n3-opcion-incorrecta {
+  animation: sacudir 0.4s ease;
+  border-color: #E85D3D;
+}
+
+@keyframes sacudir {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* =============================================================
+   CONFETI (celebracion simple)
+   ============================================================= */
+
+.confeti {
+  position: fixed;
+  top: -20px;
+  font-size: 22px;
+  animation: caer 2.2s linear forwards;
+  z-index: 999;
+  pointer-events: none;
+}
+
+@keyframes caer {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+/* =============================================================
+   RESPONSIVE
+   ============================================================= */
+
+@media (max-width: 600px) {
+  .titulo-marca { font-size: 21px; }
+  .texto-mensaje { font-size: 16px; }
+  .tarjeta { padding: 24px 18px; }
+  .btn-grande { font-size: 17px; padding: 14px 24px; }
+  .etiqueta-nivel, .etiqueta-progreso { font-size: 13px; padding: 7px 12px; }
+
+  .n1-papa-dios, .n1-regalo { height: 80px; }
+  .n1-slot { width: 52px; height: 72px; }
+  .n1-slot-vacio::after { font-size: 22px; }
+  .n1-huella { width: 34px; }
+  .n1-ficha { width: 52px; height: 70px; }
+
+  .n2-tarjeta { width: 88vw; height: 42vh; }
+  .btn-n2 { font-size: 16px; padding: 14px 22px; }
+
+  .n3-prompt { font-size: 16px; }
+  .n3-punto { width: 32px; height: 32px; font-size: 15px; }
+  .n3-opcion-numero { width: 50px; height: 50px; font-size: 20px; }
+}
+
+@media (max-width: 380px) {
+  .n1-slot { width: 44px; height: 62px; }
+  .n1-ficha { width: 44px; height: 60px; }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .juego-contenedor { padding: 8px; gap: 6px; }
+  .tarjeta { padding: 18px 16px; }
+  .emoji-grande { font-size: 40px; }
+  .titulo-marca { font-size: 19px; margin: 4px 0 10px; }
+  .texto-mensaje { font-size: 15px; margin-bottom: 14px; }
+
+  .n1-papa-dios, .n1-regalo { height: 56px; }
+  .n1-slot { width: 42px; height: 58px; }
+  .n1-bandeja { padding: 8px; min-height: 70px; }
+  .n1-ficha { width: 42px; height: 58px; }
+
+  .n2-tarjeta { height: 60vh; }
+
+  .n3-escena-wrap { max-width: 60vh; }
+}
