@@ -699,11 +699,11 @@
     pointer-events: none;
   }
   
-  /* =============================================================
-     NIVEL 3 - CUENTA LOS REGALOS
-     ============================================================= */
-  
-  .n3-area {
+/* =============================================================
+   NIVEL 3 - CUENTA LOS REGALOS
+   ============================================================= */
+
+   .n3-area {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -730,6 +730,7 @@
     margin: 0;
   }
   
+  /* AHORA: el contenedor se adapta al tamaño natural de la imagen */
   .n3-escena-wrap {
     position: relative;
     width: 100%;
@@ -741,6 +742,10 @@
     flex-shrink: 1;
     min-height: 0;
     border: 6px solid var(--amarillo-sol); /* Borde amarillo */
+    
+    /* FIX SAFARI 1: Fuerza que las coordenadas (left %, top %) inicien 
+       exactamente en el borde interno de la imagen y no fuera del borde */
+    box-sizing: border-box;
   }
   
   .n3-escena-img {
@@ -751,40 +756,120 @@
     background: var(--blanco);
   }
   
-  .n3-capa-puntos {
-    position: absolute;
-    inset: 0;
-  }
-  
+  /* ---------------------------------------------------------
+     Punto táctil INVISIBLE: el usuario debe buscar y hacer clic.
+     El tamaño del área de clic se controla con --radio-punto.
+     --------------------------------------------------------- */
   .n3-punto {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: var(--radio-punto, 60px);
+    height: var(--radio-punto, 60px);
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.55);
-    border: 4px solid var(--amarillo);
+    background: transparent;
+    border: none;
     transform: translate(-50%, -50%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    
+    /* FIX SAFARI 2: Anula cualquier margen/apariencia nativa de <button> en Safari iOS */
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    box-sizing: border-box;
+    /* Sin transición ni cambio visual al estar tocado:
+       así no se tapa ninguna flor, mariposa o niño */
+  }
+  
+  /* El número de conteo aparece ENCIMA del punto (niños y mariposas) */
+  .n3-punto::after {
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.6);
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--blanco);
+    background: var(--verde-hoja);
+    border: 2px solid var(--blanco);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--blanco);
-    touch-action: manipulation;
-    animation: pulso 1.6s ease-in-out infinite;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-sizing: border-box;
   }
   
-  @keyframes pulso {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(251, 185, 0, 0.5); }
-    50% { box-shadow: 0 0 0 8px rgba(251, 185, 0, 0); }
+  /* Cuando el punto ya fue tocado, MOSTRAMOS el número (solo si tiene data-numero) */
+  .n3-punto-tocado::after {
+    content: attr(data-numero);
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
   }
   
-  .n3-punto-tocado {
+  /* IMPORTANTE: Si el punto NO tiene data-numero (caso de las flores),
+     el ::after queda vacío para no mostrar nada encima del punto */
+  .n3-punto-tocado:not([data-numero])::after {
+    content: "";
+    opacity: 0;
+  }
+  
+  /* Efecto MUY sutil al pasar el mouse (solo para PC, no tapa nada importante) */
+  .n3-punto:hover {
+    background: rgba(251, 185, 0, 0.10);
+  }
+  
+  /* ---------------------------------------------------------
+     Panel de números (solo aparece en la pregunta de flores)
+     --------------------------------------------------------- */
+  .n3-panel-numeros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: var(--blanco);
+    border: 3px dashed var(--verde-hoja);
+    border-radius: 14px;
+    min-height: 48px;
+    box-shadow: var(--sombra-suave);
+    box-sizing: border-box;
+  }
+  
+  .n3-panel-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
     background: var(--verde-hoja);
-    border-color: var(--verde-hoja);
-    animation: none;
+    color: var(--blanco);
+    font-weight: 800;
+    font-size: 14px;
+    border: 2px solid var(--blanco);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease;
+    box-sizing: border-box;
   }
   
+  /* ---------------------------------------------------------
+     Opciones numéricas
+     --------------------------------------------------------- */
   .n3-opciones {
     display: flex;
     gap: 14px;
@@ -804,6 +889,9 @@
     box-shadow: var(--sombra);
     touch-action: manipulation;
     transition: transform 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
   }
   
   .n3-opcion-numero:active {
@@ -830,23 +918,29 @@
     80% { transform: translateX(6px); }
   }
   
-  /* =============================================================
-     CONFETI
-     ============================================================= */
-  
-  .confeti {
-    position: fixed;
-    top: -20px;
-    font-size: 22px;
-    animation: caer 2.2s linear forwards;
-    z-index: 999;
-    pointer-events: none;
-  }
-  
-  @keyframes caer {
-    to {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 0.3;
+  /* ---------------------------------------------------------
+     Responsive
+     --------------------------------------------------------- */
+  @media (max-width: 600px) {
+    .n3-punto {
+      width: var(--radio-punto, 45px);
+      height: var(--radio-punto, 45px);
+    }
+    .n3-punto::after {
+      width: 22px;
+      height: 22px;
+      font-size: 16px;
+      top: -12px;
+    }
+    .n3-panel-numeros {
+      gap: 4px;
+      padding: 6px 8px;
+      min-height: 40px;
+    }
+    .n3-panel-numero {
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
     }
   }
   
