@@ -52,8 +52,6 @@
     /* -------------------- Estado Nivel 1 -------------------- */
   
     function iniciarNivel1() {
-      Sonido.reproducirNarracion(AUDIO.n1Inicio);
-  
       const progresoEl = document.getElementById('n1-progreso');
   
       Bloque1.iniciarActividad({
@@ -84,8 +82,6 @@
     /* -------------------- Estado Nivel 2 -------------------- */
   
     function iniciarNivel2() {
-      Sonido.reproducirNarracion(AUDIO.n2Inicio);
-  
       const progresoEl = document.getElementById('n2-progreso');
   
       Bloque2.iniciarActividad({
@@ -117,8 +113,6 @@
     /* -------------------- Estado Nivel 3 -------------------- */
   
     function iniciarNivel3() {
-      Sonido.reproducirNarracion(AUDIO.n3Inicio);
-  
       const progresoEl = document.getElementById('n3-progreso');
   
       Bloque3.iniciarActividad({
@@ -146,7 +140,11 @@
   
     /* -------------------- Eventos de botones -------------------- */
   
+    // 👉 Ahora los audios de inicio se reproducen al entrar a las
+    //    pantallas de BIENVENIDA (donde está el texto narrado).
+  
     document.getElementById('btn-jugar').addEventListener('click', () => {
+      Sonido.reproducirNarracion(AUDIO.n1Inicio);
       mostrarPantalla('screen-nivel1-intro');
     });
   
@@ -155,28 +153,34 @@
     });
   
     document.getElementById('btn-volver-portada').addEventListener('click', () => {
+      Sonido.detenerNarracion();
       mostrarPantalla('screen-portada');
     });
   
     document.getElementById('btn-empezar-nivel1').addEventListener('click', () => {
+      Sonido.detenerNarracion(); // Detener el audio de la bienvenida al empezar
       mostrarPantalla('screen-nivel1-game');
       iniciarNivel1();
     });
   
     document.getElementById('btn-ir-nivel2').addEventListener('click', () => {
+      Sonido.reproducirNarracion(AUDIO.n2Inicio);
       mostrarPantalla('screen-nivel2-intro');
     });
   
     document.getElementById('btn-empezar-nivel2').addEventListener('click', () => {
+      Sonido.detenerNarracion();
       mostrarPantalla('screen-nivel2-game');
       iniciarNivel2();
     });
   
     document.getElementById('btn-ir-nivel3').addEventListener('click', () => {
+      Sonido.reproducirNarracion(AUDIO.n3Inicio);
       mostrarPantalla('screen-nivel3-intro');
     });
   
     document.getElementById('btn-empezar-nivel3').addEventListener('click', () => {
+      Sonido.detenerNarracion();
       mostrarPantalla('screen-nivel3-game');
       iniciarNivel3();
     });
